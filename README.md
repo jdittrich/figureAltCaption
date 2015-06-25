@@ -11,18 +11,21 @@ Copyright 2013 - [Helder Correia](http://heldercorreia.com) (GPL2)
 
 --------------------------------------------
 
-Examples:
+Example – this source:
+
     Bla bla bla
 
     ![this is the caption](http://lorempixel.com/400/200/)
 
     Next paragraph starts here
 
-would generate a figure like this:
+would generate this:
+
     <p> Bla bla bla</p>
+    
     <figure>
         <img src="http://lorempixel.com/400/200/">
         <figcaption>this is the caption</figcaption>
     </figure>
+   
     <p>Next paragraph starts here</p>
-"""
