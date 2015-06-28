@@ -6,7 +6,7 @@ similar to [pandoc’s handling of images/figures](http://pandoc.org/README.html
 Licensed under the GPL 2 (see LICENSE.md)
 
 Copyright 2015 - Jan Dittrich by
-building upon the markdown-figures Plugin by
+building upon the [markdown-figures](https://github.com/helderco/markdown-figures) Plugin by
 Copyright 2013 - [Helder Correia](http://heldercorreia.com) (GPL2)
 
 --------------------------------------------
