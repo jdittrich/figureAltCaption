@@ -29,3 +29,24 @@ would generate this:
     </figure>
    
     <p>Next paragraph starts here</p>
+
+
+
+It can also handle images that use references and/or titles :
+
+    Some really good writing.
+
+    ![Description of something cool.][ref1]
+
+    More great writing.
+
+    [ref1]: http://lorempixel.com/400/200/ "A title for the cool image."
+
+would generate this:
+
+    <p>Some really good writing.</p>
+
+    <figure><img alt="Description of something cool." src="http://lorempixel.com/400/200/" title="A title for the cool image."><figcaption>Description of something cool.</figcaption>
+    </figure>
+
+    <p>More great writing.</p>
