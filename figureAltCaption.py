@@ -39,10 +39,13 @@ import logging
 logger = logging.getLogger('MARKDOWN')
 
 FIGURES = [u'^\s*'+IMAGE_LINK_RE+u'\s*$', u'^\s*'+IMAGE_REFERENCE_RE+u'\s*$'] #is: linestart, any whitespace (even none), image, any whitespace (even none), line ends.
+CAPTION = r'\[(?P<caption>[^\]]*)\]' # Get the contents within the first set of brackets
 
 # This is the core part of the extension
 class FigureCaptionProcessor(BlockProcessor):
-    FIGURES_RE = re.compile('|'.join(f for f in FIGURES))
+    FIGURES_RE = re.compile('|'.join(f for f in FIGURES)) # Identifies the figures
+    CAPTION_RE = re.compile(CAPTION) # Identifies the figure caption
+
     def test(self, parent, block): # is the block relevant
         # Wenn es ein Bild gibt und das Bild alleine im paragraph ist, und das Bild nicht schon einen figure parent hat, returne True
         isImage = bool(self.FIGURES_RE.search(block))
@@ -57,7 +60,7 @@ class FigureCaptionProcessor(BlockProcessor):
 
     def run(self, parent, blocks): # how to process the block?
         raw_block = blocks.pop(0)
-        captionText = self.FIGURES_RE.search(raw_block).group(1)
+        captionText = self.CAPTION_RE.search(raw_block).group('caption') # Get the caption text
 
         # create figure
         figure = etree.SubElement(parent, 'figure')
