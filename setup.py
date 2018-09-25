@@ -13,7 +13,7 @@ setup(
     long_description_content_type="text/markdown",
     url='https://github.com/jdittrich/figureAltCaption',
     py_modules=['figureAltCaption'],
-    install_requires=['Markdown>=2.0', ],
+    install_requires=['Markdown>=2.0,<3.0', ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Plugins',
