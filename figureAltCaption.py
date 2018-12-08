@@ -79,7 +79,5 @@ class FigureCaptionExtension(Extension):
                                       FigureCaptionProcessor(md.parser),
                                       '<ulist')
 
-# def makeExtension(configs={}):
-#     return FigureCaptionExtension(configs=configs)
 def makeExtension(**kwargs):  # pragma: no cover
     return FigureCaptionExtension(**kwargs)
