@@ -30,7 +30,7 @@ would generate a figure like this:
 
 from __future__ import unicode_literals
 from markdown import Extension
-from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE, NOBRACKET, BRK
+from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree
 import re #regex
@@ -79,5 +79,7 @@ class FigureCaptionExtension(Extension):
                                       FigureCaptionProcessor(md.parser),
                                       '<ulist')
 
-def makeExtension(configs={}):
-    return FigureCaptionExtension(configs=configs)
+# def makeExtension(configs={}):
+#     return FigureCaptionExtension(configs=configs)
+def makeExtension(**kwargs):  # pragma: no cover
+    return FigureCaptionExtension(**kwargs)
