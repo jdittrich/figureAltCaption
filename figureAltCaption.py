@@ -38,7 +38,7 @@ import re #regex
 import logging
 logger = logging.getLogger('MARKDOWN')
 
-FIGURES = [u'^\s*'+IMAGE_LINK_RE+u'\s*$', u'^\s*'+IMAGE_LINK_RE+u'\{.*?\}'+u'\s*$', u'^\s*'+IMAGE_REFERENCE_RE+u'\s*$'] #is: linestart, any whitespace (even none), image, any whitespace (even none), line ends.
+FIGURES = [u'^\s*'+IMAGE_LINK_RE, u'^\s*'+IMAGE_REFERENCE_RE] #is: linestart, any whitespace (even none), image, any whitespace (even none), line ends.
 CAPTION = r'\[(?P<caption>[^\]]*)\]' # Get the contents within the first set of brackets
 ATTR = r'\{(?P<attributes>[^\}]*)\}'
 
@@ -53,9 +53,10 @@ class FigureCaptionProcessor(BlockProcessor):
         isImage = bool(self.FIGURES_RE.search(block))
         isOnlyOneLine = (len(block.splitlines())== 1)
         isInFigure = (parent.tag == 'figure')
-
+        
         # print(block, isImage, isOnlyOneLine, isInFigure, "T,T,F")
         if (isImage and isOnlyOneLine and not isInFigure):
+            print(block)
             return True
         else:
             return False
