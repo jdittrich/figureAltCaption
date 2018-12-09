@@ -30,7 +30,7 @@ would generate a figure like this:
 
 from __future__ import unicode_literals
 from markdown import Extension
-from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE, NOBRACKET, BRK
+from markdown.inlinepatterns import IMAGE_LINK_RE, IMAGE_REFERENCE_RE
 from markdown.blockprocessors import BlockProcessor
 from markdown.util import etree
 import re #regex
@@ -38,32 +38,42 @@ import re #regex
 import logging
 logger = logging.getLogger('MARKDOWN')
 
-FIGURES = [u'^\s*'+IMAGE_LINK_RE+u'\s*$', u'^\s*'+IMAGE_REFERENCE_RE+u'\s*$'] #is: linestart, any whitespace (even none), image, any whitespace (even none), line ends.
+FIGURES = [u'^\s*'+IMAGE_LINK_RE, u'^\s*'+IMAGE_REFERENCE_RE] #is: linestart, any whitespace (even none), image, any whitespace (even none), line ends.
 CAPTION = r'\[(?P<caption>[^\]]*)\]' # Get the contents within the first set of brackets
+ATTR = r'\{(?P<attributes>[^\}]*)\}'
 
 # This is the core part of the extension
 class FigureCaptionProcessor(BlockProcessor):
     FIGURES_RE = re.compile('|'.join(f for f in FIGURES)) # Identifies the figures
     CAPTION_RE = re.compile(CAPTION) # Identifies the figure caption
+    ATTR_RE = re.compile(ATTR) # Identifies the figure caption
 
     def test(self, parent, block): # is the block relevant
         # Wenn es ein Bild gibt und das Bild alleine im paragraph ist, und das Bild nicht schon einen figure parent hat, returne True
         isImage = bool(self.FIGURES_RE.search(block))
         isOnlyOneLine = (len(block.splitlines())== 1)
         isInFigure = (parent.tag == 'figure')
-
+        
         # print(block, isImage, isOnlyOneLine, isInFigure, "T,T,F")
         if (isImage and isOnlyOneLine and not isInFigure):
+            print(block)
             return True
         else:
             return False
 
     def run(self, parent, blocks): # how to process the block?
         raw_block = blocks.pop(0)
-        captionText = self.CAPTION_RE.search(raw_block).group('caption') # Get the caption text
+        captionText = self.CAPTION_RE.search(raw_block).group('caption')
+        try:
+            attrText = self.ATTR_RE.search(raw_block).group('attributes') # Get the caption text
+        except:
+            attrText = None
 
         # create figure
         figure = etree.SubElement(parent, 'figure')
+
+        if attrText:
+            figure.set('id',attrText)
 
         # render image in figure
         figure.text = raw_block
@@ -79,5 +89,5 @@ class FigureCaptionExtension(Extension):
                                       FigureCaptionProcessor(md.parser),
                                       '<ulist')
 
-def makeExtension(configs={}):
-    return FigureCaptionExtension(configs=configs)
+def makeExtension(**kwargs):
+    return FigureCaptionExtension(**kwargs)
